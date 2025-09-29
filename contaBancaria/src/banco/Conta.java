@@ -14,7 +14,7 @@ public class Conta {
     
      Scanner ler = new Scanner(System.in);
     
-public Conta(Cliente cliente, int agencia, int numero, double saldo, int senha) {
+public Conta(Cliente cliente, int agencia, int senha, double saldo) {
 	
 	this.cliente = cliente;
 	this.agencia = agencia;
@@ -32,7 +32,7 @@ public Conta(Cliente cliente, int agencia, int numero, double saldo, int senha) 
 		
 		if(this.senha == senha) {
 			
-			System.out.println("Seu saldo é de:" + saldo);
+			System.out.println("Seu saldo é de:" + this.saldo);
 			
 		}else {
 			
@@ -42,52 +42,65 @@ public Conta(Cliente cliente, int agencia, int numero, double saldo, int senha) 
 	}
 
 	
-	private void saque() {
-		
+	public boolean saque(int senha, double valor) {
+	    boolean confirma = false;
+	    
+	    if (this.senha == senha) {
+	        if (this.saldo >= valor) {
+	            this.saldo -= valor;
+	            System.out.println("Saque realizado");
+	            confirma = true;
+	        } else {
+	            System.out.println("Saldo insuficiente");
+	        }
+	    } else {
+	        System.out.println("Senha inválida");
+	    }
+
+	    return confirma;
+	}
+
 	
+	public void deposito(double valor) {
 		
-		 System.out.println("Digite o valor que gostaria de sacar");
-		   double valor = ler.nextDouble();
-		   
-		if(saldo >= valor) {
-			System.out.println("Digite sua senha");
-			int senha = ler.nextInt();
+		this.saldo += valor;
+		System.out.println("valor depositado");
+		
+	}
+	
+	
+	public void transferencia(int senha, double valor, Conta c) {
+		
+		boolean conf = saque(senha, valor);
+		
+		if (conf) {
 			
-			if(this.senha == senha) {
-				System.out.println("saque realizado com sucesso");
-				saldo -= valor;
-			}else {
-			System.out.println("Senha incorreta");
-				
-			}
+			c.deposito(valor);
+			System.out.println("transferencia realizada com sucesso");
+			
+		
+	}else {
+		
+		System.out.println("transferencia cancelada");
+	}
+		
+		
+	}
+	
+	
+	public void dadosCliente(int senha) {
+		
+		if (this.senha == senha) {
+			
+			System.out.println("Dados do Cliente" + "\n" + "Nome: " + this.cliente.nomeCliente + "\n" + "CPF: " + this.cliente.cpfCliente + "\n" + "telefone: " + this.cliente.telefoneCliente);
 			
 		}else {
 			
-			System.out.println("Saldo insuficiente");
+			System.out.println("Senha inválida");
 		}
-		
 		
 	}
 	
-	private void deposito() {
-		
-		 System.out.println("Digite o valor que gostaria de depositar");
-		   double valor = ler.nextDouble();
-		   
-		   System.out.println("Digite sua senha");
-		   int senha = ler.nextInt();
-		   
-		   if(this.senha == senha) {
-				System.out.println("depósito realizado com sucesso");
-				saldo += valor;
-			   
-		   }else {
-			   System.out.println("Senha incorreta");
-			   
-		   }
-		
-		
-	}
 	
 	
 }
